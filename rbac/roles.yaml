@@ -1,0 +1,70 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-readonly
+  namespace: payments-prod
+rules:
+  - apiGroups: ["", "apps", "batch"]
+    resources: ["pods", "pods/log", "services", "deployments", "jobs", "configmaps"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cicd-deployer
+  namespace: payments-prod
+rules:
+  - apiGroups: ["", "apps", "batch"]
+    resources: ["configmaps", "services", "deployments", "replicasets", "jobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: security-auditor
+rules:
+  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "policy", "rbac.authorization.k8s.io"]
+    resources: ["namespaces", "pods", "deployments", "roles", "rolebindings", "clusterroles", "clusterrolebindings", "networkpolicies", "podsecuritypolicies"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: monitoring-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "nodes/metrics", "pods", "services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-readonly
+  namespace: payments-prod
+subjects:
+  - kind: Group
+    name: finserv-developers
+roleRef:
+  kind: Role
+  name: developer-readonly
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cicd-deployer
+  namespace: payments-prod
+subjects:
+  - kind: ServiceAccount
+    name: cicd-deployer
+    namespace: platform-prod
+roleRef:
+  kind: Role
+  name: cicd-deployer
+  apiGroup: rbac.authorization.k8s.io

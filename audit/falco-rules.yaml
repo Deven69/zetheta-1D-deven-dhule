@@ -1,0 +1,12 @@
+- rule: Shell spawned in payment workload
+  desc: Detect interactive shells in payment pods
+  condition: spawned_process and container and proc.name in (sh, bash, ash) and k8s.ns.name startswith payments-
+  output: Shell spawned in payment pod (user=%user.name pod=%k8s.pod.name command=%proc.cmdline)
+  priority: WARNING
+  tags: [kubernetes, payments]
+- rule: Read etc shadow
+  desc: Detect reads of the local password database
+  condition: open_read and fd.name=/etc/shadow
+  output: Sensitive file read (user=%user.name process=%proc.name)
+  priority: CRITICAL
+  tags: [filesystem, credential_access]

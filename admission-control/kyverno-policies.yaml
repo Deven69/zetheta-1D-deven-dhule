@@ -1,0 +1,42 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-digest
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: image-must-use-digest
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      validate:
+        message: Images must be pinned by immutable digest.
+        pattern:
+          spec:
+            containers:
+              - image: "*@sha256:*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-signed-images
+spec:
+  validationFailureAction: Enforce
+  webhookConfiguration:
+    timeoutSeconds: 30
+  rules:
+    - name: verify-signature
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      verifyImages:
+        - imageReferences: ["ghcr.io/zetheta/*"]
+          attestors:
+            - entries:
+                - keys:
+                    secret:
+                      name: cosign-public-key
+                      namespace: platform-prod
