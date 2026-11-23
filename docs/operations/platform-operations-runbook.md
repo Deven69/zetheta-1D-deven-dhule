@@ -16,3 +16,9 @@
   quarterly.
 - Review HPA saturation, quota headroom, failed admissions, and policy drift.
 - During upgrades, drain one failure domain at a time while respecting PDBs.
+
+## 5x growth plan
+
+Keep prod quotas and HPA ceilings under review, add worker capacity by failure
+domain, and load-test payment and fraud paths before raising limits. Retain
+smaller dev/staging pools and use the same signed digest promotion path.

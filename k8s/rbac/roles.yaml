@@ -1,4 +1,47 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: finserv-platform-admin
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: finserv-security-auditor
+rules:
+  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "policy", "rbac.authorization.k8s.io"]
+    resources: ["namespaces", "pods", "pods/log", "services", "deployments", "jobs", "roles", "rolebindings", "clusterroles", "clusterrolebindings", "networkpolicies", "resourcequotas", "limitranges"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: finserv-monitoring
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "nodes/metrics", "pods", "services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: namespace-admin
+  namespace: payments-prod
+rules:
+  - apiGroups: ["", "apps", "batch"]
+    resources: ["pods", "pods/log", "services", "deployments", "replicasets", "jobs", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: developer-readonly
@@ -11,36 +54,32 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
+  name: developer-diagnostics
+  namespace: payments-dev
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/exec", "services", "events"]
+    verbs: ["get", "list", "watch", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-diagnostics
+  namespace: payments-staging
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/exec", "services", "events"]
+    verbs: ["get", "list", "watch", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
   name: cicd-deployer
   namespace: payments-prod
 rules:
   - apiGroups: ["", "apps", "batch"]
-    resources: ["configmaps", "services", "deployments", "replicasets", "jobs"]
+    resources: ["configmaps", "services", "deployments", "replicasets", "jobs", "pods", "pods/log"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: [""]
-    resources: ["pods", "pods/log"]
-    verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: security-auditor
-rules:
-  - apiGroups: ["", "apps", "batch", "networking.k8s.io", "policy", "rbac.authorization.k8s.io"]
-    resources: ["namespaces", "pods", "deployments", "roles", "rolebindings", "clusterroles", "clusterrolebindings", "networkpolicies", "podsecuritypolicies"]
-    verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: monitoring-reader
-rules:
-  - apiGroups: [""]
-    resources: ["nodes", "nodes/metrics", "pods", "services", "endpoints"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["apps"]
-    resources: ["deployments", "replicasets", "statefulsets"]
-    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

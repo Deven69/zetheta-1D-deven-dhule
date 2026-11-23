@@ -1,0 +1,74 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payment-gateway
+  namespace: payments-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: payment-gateway
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              domain: platform
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-gateway
+      ports:
+        - protocol: TCP
+          port: 8443
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payment-auth
+  namespace: payments-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: payment-auth
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payment-tokenizer
+  namespace: payments-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: payment-tokenizer
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payment-settlement
+  namespace: payments-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: payment-settlement
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-payment-reconciliation
+  namespace: payments-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: payment-reconciliation
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []

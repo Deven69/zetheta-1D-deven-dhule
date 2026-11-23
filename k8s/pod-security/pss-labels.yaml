@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-security-policy-reference
+  namespace: platform-prod
+data:
+  policy: Restricted enforcement in prod; Baseline enforcement with Restricted audit in staging; Baseline enforcement with Restricted warning in dev.

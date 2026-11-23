@@ -1,4 +1,6 @@
 replicaCount: 1
+environment: dev
+namespace: payments-dev
 resources:
   requests: {cpu: 50m, memory: 64Mi}
   limits: {cpu: 250m, memory: 256Mi}

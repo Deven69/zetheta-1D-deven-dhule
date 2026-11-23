@@ -1,1 +1,10 @@
 replicaCount: 2
+environment: staging
+namespace: payments-staging
+resources:
+  requests:
+    cpu: 150m
+    memory: 192Mi
+  limits:
+    cpu: 750m
+    memory: 768Mi

@@ -33,7 +33,7 @@ spec:
           - resources:
               kinds: ["Pod"]
       verifyImages:
-        - imageReferences: ["ghcr.io/zetheta/*"]
+        - imageReferences: ["registry.finserv.example/*"]
           attestors:
             - entries:
                 - keys:

@@ -11,7 +11,7 @@ rules:
     verbs: ["create", "update", "patch", "delete"]
   - level: Metadata
     resources:
-      - group: "rbac.authorization.k8s.io"
+      - group: rbac.authorization.k8s.io
         resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
   - level: None
     users: ["system:kube-controller-manager", "system:kube-scheduler"]

@@ -1,13 +1,13 @@
 # Developer onboarding
 
-1. Request membership in the environment-specific identity-provider group.
-2. Authenticate with the approved SSO and select the assigned context.
-3. Build an image with the secure Dockerfile, scan it, sign it with Cosign, and
-   push it to the approved registry.
-4. Pin the image digest in the environment values file and deploy with Helm.
-5. Use `kubectl get pods` and `kubectl logs` for read-only diagnostics. Never
-   copy secrets into manifests or use `kubectl exec` in production.
-6. Configuration belongs in Vault paths owned by the service domain.
+1. Request the environment-specific SSO group and select the approved context.
+2. Build, scan, sign, and push the image with
+   `Dockerfiles/sample-service.Dockerfile`.
+3. Pin the immutable digest in the matching file under `helm/` and deploy.
+4. Configure the service's Vault path and let Vault Agent inject a short-lived
+   lease into the in-memory volume; never copy values into YAML or local files.
+5. Use `kubectl get pods` and `kubectl logs` for diagnostics. Production has no
+   developer exec access; escalate policy denials instead of weakening controls.
 
 Troubleshooting starts with events, readiness probes, service endpoints,
 network-policy evidence, and mesh telemetry. Escalate policy denials to the

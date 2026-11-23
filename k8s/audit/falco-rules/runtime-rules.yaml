@@ -1,0 +1,30 @@
+- rule: Shell spawned in payment workload
+  desc: Detect interactive shells in payment pods
+  condition: spawned_process and container and proc.name in (sh, bash, ash) and k8s.ns.name startswith payments-
+  output: Shell spawned in payment pod (user=%user.name pod=%k8s.pod.name command=%proc.cmdline)
+  priority: WARNING
+  tags: [kubernetes, payments]
+- rule: Unexpected outbound from payments
+  desc: Detect payment pods connecting outside approved services
+  condition: outbound and container and k8s.ns.name startswith payments- and not fd.sip in (10.20.0.10, 10.20.0.11)
+  output: Unexpected payment egress (pod=%k8s.pod.name destination=%fd.sip)
+  priority: WARNING
+  tags: [kubernetes, payments, network]
+- rule: Cardholder file access
+  desc: Detect access to cardholder data paths
+  condition: open_read and container and (fd.name startswith /var/lib/finserv/cardholder or fd.name startswith /data/pci)
+  output: Cardholder file read (pod=%k8s.pod.name file=%fd.name)
+  priority: CRITICAL
+  tags: [pci, filesystem]
+- rule: Container talking to etcd
+  desc: Detect workloads connecting directly to etcd
+  condition: outbound and container and fd.sport=2379
+  output: Container connected to etcd (pod=%k8s.pod.name destination=%fd.sip)
+  priority: CRITICAL
+  tags: [kubernetes, control_plane]
+- rule: Crypto miner process
+  desc: Detect common cryptocurrency miner processes
+  condition: spawned_process and container and proc.name in (xmrig, minerd, cpuminer)
+  output: Possible crypto miner (pod=%k8s.pod.name process=%proc.name)
+  priority: CRITICAL
+  tags: [cryptomining, process]

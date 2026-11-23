@@ -1,0 +1,64 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-fraud-detection
+  namespace: risk-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: fraud-detection
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-rule-engine
+  namespace: risk-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: rule-engine
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-risk-scoring
+  namespace: risk-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: risk-scoring
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-case-management
+  namespace: risk-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: case-management
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-sanctions-screening
+  namespace: risk-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: sanctions-screening
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []

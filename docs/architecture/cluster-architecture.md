@@ -22,7 +22,7 @@ staging retain the same namespace and policy model, but may use smaller pools.
 etcd snapshots are encrypted with an external KMS, copied to immutable object
 storage, and restored quarterly into an isolated recovery cluster. Application
 data uses service-owned backups. Recovery objectives and evidence are recorded
-in `operations/platform-operations-runbook.md`.
+in `docs/operations/platform-operations-runbook.md`.
 
 ```mermaid
 flowchart TB

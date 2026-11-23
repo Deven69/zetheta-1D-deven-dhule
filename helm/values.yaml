@@ -1,6 +1,7 @@
 image:
-  repository: ghcr.io/zetheta/service
-  digest: sha256:replace-me
+  repository: registry.finserv.example/payment-gateway
+  digest: sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+nameOverride: payment-gateway
 replicaCount: 2
 service:
   port: 8443
