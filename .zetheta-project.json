@@ -1,6 +1,6 @@
 {
   "projectNumber": "1D",
-  "internSlug": "devendhule",
+  "internSlug": "1D-deven-dhule",
   "projectName": "Operation Fortress",
   "platform": "security-hardened-kubernetes",
   "domains": ["payments", "risk", "customer", "platform"],
