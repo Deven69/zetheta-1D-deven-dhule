@@ -12,10 +12,12 @@ and provider controls are implementation work outside this design repository.
 
 The platform uses one namespace per domain and environment, layered quotas and
 limits, Restricted production PSS, digest-pinned signed images, and explicit
-service dependencies. The intended visual overview is
-`docs/architecture/cluster-diagram.png` and the dependency view is
-`docs/architecture/service-dependency-map.png` (diagram assets remain to be
-supplied).
+service dependencies. ![FinServ Digital cluster architecture](docs/architecture/cluster-diagram.png)
+
+The service dependency view is
+[`docs/architecture/service-dependency-map.png`](docs/architecture/service-dependency-map.png),
+and the network flow view is
+[`docs/security/network-flow-diagram.png`](docs/security/network-flow-diagram.png).
 
 ## Repository map
 
